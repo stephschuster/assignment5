@@ -62,12 +62,8 @@ public class PointDataStructure implements PDT {
 	
 	public Point[] getPointsInRange(int XLeft, int XRight) {
 		int totalPoints = numOfPointsInRange(XLeft, XRight);
-		int leftIndex = findBiggerIndexByX(XLeft, 0, sortedByXPoints.length);
-		Point[] result = new Point[totalPoints];
-		for(int i = leftIndex; i < leftIndex + totalPoints; i++){
-			result[i-leftIndex] = sortedByXPoints[i];
-		}
-		return result;
+		
+		return null;
 	}
 
 	
@@ -78,31 +74,7 @@ public class PointDataStructure implements PDT {
 		return rightIndex - leftIndex + 1;
 	}
 	
-	private int findBiggerIndexByX(int x, int start, int end){
-		boolean found = false;
-		int result = -1;
-		while(end > start && !found){
-			int middleIndex = (end-start)/2;
-			
-			if(sortedByXPoints[middleIndex].getX() == x){
-				found = true;
-				result = middleIndex;
-			} else if(sortedByXPoints[middleIndex].getX() > x){
-				end = middleIndex-1;
-				// if middle is bigger than x, I want to save it, maybe is the closest number
-				result = middleIndex;
-			} else{
-				// needs to debug, IDK what its the closest number in this case
-				start = middleIndex+1;
-			}
-		}
-		if(!found){
-			// maybe here I will find the closest number bigger than x
-		}
-		return result;
-	}
-	
-		@Override
+	@Override
 	public double averageHeightInRange(int XLeft, int XRight) {
 		// TODO Auto-generated method stub
 		return 0;
