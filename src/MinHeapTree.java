@@ -1,11 +1,10 @@
 
 public class MinHeapTree {
-
 	Point[] arr;
 	//number of elements in the heap
 	int Size;
 	
-	public void MinHeapTree(Point[] arr,int numOfElements,int arrayLength){
+	public MinHeapTree(Point[] arr,int numOfElements,int arrayLength){
 		arr= new Point[arrayLength];
 		Size=numOfElements;
 		
@@ -42,6 +41,11 @@ public class MinHeapTree {
 		arr[Size]= new Point(Integer.MIN_VALUE,Integer.MIN_VALUE);
 		IncreaseKey(Size, key);
 	}
+	private void IncreaseKey(int size2, Point key) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public Point HeapMin(){
 		return arr[1]; 
 	}

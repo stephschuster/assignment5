@@ -2,7 +2,6 @@ import javax.management.RuntimeErrorException;
 
 
 public class MaxHeapTree {
-
 	Point[] arr;
 	//number of elements in the heap
 	int Size;
@@ -56,5 +55,4 @@ public class MaxHeapTree {
 	public Point HeapMax(){
 		return arr[1]; 
 	}
-	
 }
