@@ -11,7 +11,21 @@ public class PointDataStructure implements PDT {
 	
 	public PointDataStructure(Point[] points, Point initialYMedianPoint)
 	{
-<<<<<<< HEAD
+		root= new MedianNode(initialYMedianPoint);
+		
+		int partRes=Partition(points, initialYMedianPoint);
+		//indexes of the two new heaps arrays
+		Point MaxArrayIndex= new Point(0,partRes);
+		Point MinArrayIndex= new Point(partRes+2,points.length-1);
+		
+		Point[] MaxHeapArray= new Point[partRes+1];
+		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
+			MaxHeapArray[i+1]=new Point(points[i]);
+		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
+		
+		root.setLeft(MaxHeap);
+		
+		// sort by x
 		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
 		sortedByXPoints = new Point[maxSize];
 		size = points.length;
@@ -36,23 +50,6 @@ public class PointDataStructure implements PDT {
 				sortedByXPoints[points[i].getX()] = points[i];
 			}
 		}
-=======
-		root= new MedianNode(initialYMedianPoint);
-		
-		int partRes=Partition(points, initialYMedianPoint);
-		//indexes of the two new heaps arrays
-		Point MaxArrayIndex= new Point(0,partRes);
-		Point MinArrayIndex= new Point(partRes+2,points.length-1);
-		
-		Point[] MaxHeapArray= new Point[partRes+1];
-		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
-			MaxHeapArray[i+1]=new Point(points[i]);
-		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
-		
-		root.setLeft(MaxHeap);
-		
-		
->>>>>>> master
 	}
 
 
