@@ -14,6 +14,15 @@ class UtilsClass {
 		    return (int) (Math.log(x) / Math.log(base));
 		}
 		
+		public static int Left(int i){
+			return 2*i;
+		}
+		public static  int Right(int i){
+			return 2*i +1;
+		}
+		public static  int Parent(int i){
+			return i/2;
+		}
 		
 		
 }

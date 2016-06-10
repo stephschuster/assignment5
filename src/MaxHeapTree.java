@@ -4,18 +4,19 @@ import javax.management.RuntimeErrorException;
 public class MaxHeapTree {
 
 	Point[] arr;
-	int Size;//number of elements in the heap
+	//number of elements in the heap
+	int Size;
 	public MaxHeapTree(Point[] arr,int numOfElements,int arrayLength){
 		arr= new Point[arrayLength];
 		Size=numOfElements;
 		
 		for (int i=Size/2;i>0;i--)
 			Heapify(i);
-		
+		 
 	}
 	
 	private void Heapify(int index){
-		int l=Left(index),r=Right(index);
+		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int max=index;
 		
 		if (l<Size && (arr[l].getY() > arr[max].getY()))
@@ -40,9 +41,9 @@ public class MaxHeapTree {
 		if (key.getY()<arr[i].getY())
 			throw new RuntimeException("New key is smaller than current key");
 		arr[i]= new Point(key);
-		while (i>1 && arr[Parent(i)].getY()< arr[i].getY()){
-			UtilsClass.swap(arr, i, Parent(i));
-			i=Parent(i);
+		while (i>1 && arr[UtilsClass.Parent(i)].getY()< arr[i].getY()){
+			UtilsClass.swap(arr, i, UtilsClass.Parent(i));
+			i=UtilsClass.Parent(i);
 		}
 			
 	}
@@ -55,13 +56,5 @@ public class MaxHeapTree {
 	public Point HeapMax(){
 		return arr[1]; 
 	}
-	private int Left(int i){
-		return 2*i;
-	}
-	private int Right(int i){
-		return 2*i +1;
-	}
-	private int Parent(int i){
-		return i/2;
-	}
+	
 }
