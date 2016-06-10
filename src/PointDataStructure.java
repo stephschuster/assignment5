@@ -5,9 +5,13 @@ public class PointDataStructure implements PDT {
 	private BinaryTree tree;
 	private int size;
 
-	//////////////// DON'T DELETE THIS CONSTRUCTOR ////////////////
+	MedianNode root;
+	MaxHeapTree maxHeap;
+	MinHeapTree minHeap;
+	
 	public PointDataStructure(Point[] points, Point initialYMedianPoint)
 	{
+<<<<<<< HEAD
 		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
 		sortedByXPoints = new Point[maxSize];
 		size = points.length;
@@ -32,6 +36,23 @@ public class PointDataStructure implements PDT {
 				sortedByXPoints[points[i].getX()] = points[i];
 			}
 		}
+=======
+		root= new MedianNode(initialYMedianPoint);
+		
+		int partRes=Partition(points, initialYMedianPoint);
+		//indexes of the two new heaps arrays
+		Point MaxArrayIndex= new Point(0,partRes);
+		Point MinArrayIndex= new Point(partRes+2,points.length-1);
+		
+		Point[] MaxHeapArray= new Point[partRes+1];
+		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
+			MaxHeapArray[i+1]=new Point(points[i]);
+		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
+		
+		root.setLeft(MaxHeap);
+		
+		
+>>>>>>> master
 	}
 
 
@@ -108,7 +129,42 @@ public class PointDataStructure implements PDT {
 		return null;
 	}
 
-	//TODO: add members, methods, etc.
+	/**
+	 * Execute partition with a given pivot
+	 * 
+	 * @param points
+	 * @param pivot
+	 * 
+	 * return index of the end of the first array
+	 */
+	private int Partition(Point[] points, Point pivot){
+		
+		int left=0,right=points.length-1;
+		int pivot_index=IndexofPoint(points,pivot);
+		
+		while(left<right){
+			while(left<points.length-1 && (points[left].getY()) <=pivot.getY())
+				left++;
+			while( (points[right].getY()) <= pivot.getY() )
+				right--;
+			if(left<right)
+				UtilsClass.swap(points,left,right);
+		}
+		UtilsClass.swap(points,pivot_index,right);
+		return right;
+		
+	}
+	
+	//return index of a given point in array of points. If doesn't exist return -1
+	private int IndexofPoint(Point[] pointsArr, Point point){
+		int size = pointsArr.length;
+		for(int i=0;i<size;i++){
+			if (pointsArr[i].getY()==point.getY())
+				return i;
+		
+		}
+		return -1;
+	}
 	
 }
 
