@@ -43,7 +43,7 @@ public class AVLCountingTree {
 		return findSmallestPositionInRange(x, root, 0);
 	}
 	
-	public int findSmallestPositionInRange(int x, AVLNode current, int counter){
+	private int findSmallestPositionInRange(int x, AVLNode current, int counter){
 		if(current != null){
 			if(current.data.getX() < x){
 				return findSmallestPositionInRange(x, current.right, counter + current.counter);
@@ -63,7 +63,7 @@ public class AVLCountingTree {
 		return findBiggerPositionInRange(x, root, 0);
 	}
 	
-	public int findBiggerPositionInRange(int x, AVLNode current, int counter){
+	private int findBiggerPositionInRange(int x, AVLNode current, int counter){
 		if(current != null){
 			if(current.data.getX() > x){
 				return findBiggerPositionInRange(x, current.left, counter);
@@ -79,22 +79,59 @@ public class AVLCountingTree {
 		return -1;
 	}
 	
-	public AVLNode findSmallestInRange(int x){
-		AVLNode current = root;
-		boolean isFound = false;
-		while(current != null && !isFound){
+	
+	public double findHeightBefore(int x, boolean includeRange){
+		
+		return findHeightBefore(x, root, root.accumulateHeight, includeRange);
+	}
+	
+	private double findHeightBefore(int x, AVLNode current, double accumulateHeight, boolean includeRange){
+		if(current != null){
 			if(current.data.getX() < x){
-				current = current.right;
-			} else if(current.data.getX() > x && current.left != null && current.left.data.getX() >= x){
-				current = current.left;
-			} else if(current.data.getX() >= x){
-				isFound = true;
-			}else{
-				current = null;
+				return findHeightBefore(x, current.right, accumulateHeight, includeRange);
+			} else{
+				if(current.right != null){
+					accumulateHeight -= current.right.accumulateHeight;
+				}
+				
+				double result = findHeightBefore(x, current.left, accumulateHeight-current.data.getY(), includeRange);
+				
+				if(result == -1 && includeRange){
+					result = accumulateHeight;
+				}else if(result == -1 && !includeRange){
+					result = accumulateHeight-current.data.getY();
+				}
+				
+				return result;
 			}
 		}
 		
-		return current;
+		return -1;
+	}
+	
+	public double findHeightAfter(int x){
+		
+		return findHeightAfter(x, root);
+	}
+	
+	private double findHeightAfter(int x, AVLNode current){
+		if(current != null){
+			if(current.data.getX() > x){
+				return findHeightAfter(x, current.left);
+			} else if(current.data.getX() <= x){
+				double result = findHeightAfter(x, current.left);
+				if(result > -1)
+					return current.accumulateHeight - result;
+				else{
+					if(current.right!= null)
+						return current.right.accumulateHeight;
+					else
+						return 0;
+				}
+			}
+		}
+		
+		return -1;
 	}
 	
 	public AVLNode findBiggerInRange(int x){
