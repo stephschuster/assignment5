@@ -1,4 +1,5 @@
 
+
 public class PointDataStructure implements PDT {
 
 	private AVLCountingTree tree;
@@ -30,6 +31,7 @@ public class PointDataStructure implements PDT {
 		size = points.length;
 		tree = new AVLCountingTree();
 		tree.createTreeFromSortedArray(sortByXPoints(points), size);
+		
 	}
 	
 

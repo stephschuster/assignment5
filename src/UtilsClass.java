@@ -23,6 +23,12 @@ class UtilsClass {
 		public static  int Parent(int i){
 			return i/2;
 		}
-		
+
+		public static void printarr(Point[] arr,int size){
+			System.out.println();
+			for (int i=1;i<size;i++){
+				System.out.print(" ("+arr[i].getX()+","+arr[i].getY()+") ");
+			}
+		}
 		
 }
