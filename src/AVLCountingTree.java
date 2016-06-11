@@ -102,6 +102,8 @@ public class AVLCountingTree {
 					result = accumulateHeight-current.data.getY();
 				}
 				
+				
+				
 				return result;
 			}
 		}
