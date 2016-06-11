@@ -1,9 +1,9 @@
 
-public class BinaryNode {
-	BinaryNode left;
-	BinaryNode right;
+public class AVLNode {
+	AVLNode left;
+	AVLNode right;
 	Point data;
-	int accumulateNodes;
+	int counter;
 	double accumulateHeight;
 	
 	public boolean isLeaf(){

@@ -1,8 +1,7 @@
 
 public class PointDataStructure implements PDT {
 
-	private Point[] sortedByXPoints;
-	private BinaryTree tree;
+	private AVLCountingTree tree;
 	private int size;
 
 	MedianNode root;
@@ -11,33 +10,31 @@ public class PointDataStructure implements PDT {
 	
 	public PointDataStructure(Point[] points, Point initialYMedianPoint)
 	{
-		root= new MedianNode(initialYMedianPoint);
-		
-		int partRes=Partition(points, initialYMedianPoint);
-		//indexes of the two new heaps arrays
-		Point MaxArrayIndex= new Point(0,partRes);
-		Point MinArrayIndex= new Point(partRes+2,points.length-1);
-		
-		Point[] MaxHeapArray= new Point[partRes+1];
-		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
-			MaxHeapArray[i+1]=new Point(points[i]);
-		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
-		
-		root.setLeft(MaxHeap);
+//		root= new MedianNode(initialYMedianPoint);
+//		
+//		int partRes=Partition(points, initialYMedianPoint);
+//		//indexes of the two new heaps arrays
+//		Point MaxArrayIndex= new Point(0,partRes);
+//		Point MinArrayIndex= new Point(partRes+2,points.length-1);
+//		
+//		Point[] MaxHeapArray= new Point[partRes+1];
+//		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
+//			MaxHeapArray[i+1]=new Point(points[i]);
+//		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
+//		
+//		root.setLeft(MaxHeap);
 		
 		// sort by x
 		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
-		sortedByXPoints = new Point[maxSize];
+
 		size = points.length;
-		tree = new BinaryTree();
-		
-		sortByXPoints(points);
-		
-		tree.createTreeFromSortedArray(sortedByXPoints, size);
+		tree = new AVLCountingTree();
+		tree.createTreeFromSortedArray(sortByXPoints(points), size);
 	}
 	
 
-	private void sortByXPoints(Point[] points) {
+	private Point[] sortByXPoints(Point[] points) {
+		Point[] sortedByXPoints = new Point[points.length];
 		int lastIndex = points.length-1;
 		
 		if(lastIndex < points[lastIndex].getX()){
@@ -50,6 +47,7 @@ public class PointDataStructure implements PDT {
 				sortedByXPoints[points[i].getX()] = points[i];
 			}
 		}
+		return sortedByXPoints;
 	}
 
 
@@ -62,15 +60,15 @@ public class PointDataStructure implements PDT {
 	
 	public Point[] getPointsInRange(int XLeft, int XRight) {
 		int totalPoints = numOfPointsInRange(XLeft, XRight);
-		
-		return null;
+		Point[] result = new Point[totalPoints];
+		tree.fillArray(result, XLeft, XRight);
+		return result;
 	}
 
 	
 	public int numOfPointsInRange(int XLeft, int XRight) {
-		
-		int leftIndex = tree.findSmallestInRange(XLeft).accumulateNodes;
-		int rightIndex = tree.findBiggerInRange(XRight).accumulateNodes;
+		int leftIndex = tree.findSmallestPositionInRange(XLeft);
+		int rightIndex = tree.findBiggerPositionInRange(XRight);
 		return rightIndex - leftIndex + 1;
 	}
 	
@@ -94,8 +92,9 @@ public class PointDataStructure implements PDT {
 
 	@Override
 	public Point[] getAllPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		Point[] result = new Point[size];
+		tree.fillArray(result, 0, size-1);
+		return result;
 	}
 
 	/**
