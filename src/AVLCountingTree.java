@@ -88,7 +88,14 @@ public class AVLCountingTree {
 	private double findHeightBefore(int x, AVLNode current, double accumulateHeight, boolean includeRange){
 		if(current != null){
 			if(current.data.getX() < x){
-				return findHeightBefore(x, current.right, accumulateHeight, includeRange);
+				double result = findHeightBefore(x, current.right, accumulateHeight, includeRange);
+				if(result ==-1){
+					result = accumulateHeight;
+					if(!includeRange)
+						result = result- current.data.getY();
+				}
+				
+				return result;
 			} else{
 				if(current.right != null){
 					accumulateHeight -= current.right.accumulateHeight;
@@ -101,8 +108,6 @@ public class AVLCountingTree {
 				}else if(result == -1 && !includeRange){
 					result = accumulateHeight-current.data.getY();
 				}
-				
-				
 				
 				return result;
 			}
