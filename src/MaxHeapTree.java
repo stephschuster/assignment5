@@ -61,6 +61,8 @@ public class MaxHeapTree {
 		return max;
 	}
 	
+	
+	
 	private void IncreaseKey(int i, Point key){
 		if (key.getY()<arr[i].getY())
 			throw new RuntimeException("New key is smaller than current key");
