@@ -71,6 +71,7 @@ public class PointDataStructure implements PDT {
 		}
 		
 		saveStructureValidity();
+		tree.Insert(point);
 	}
 	
 
@@ -100,10 +101,11 @@ public class PointDataStructure implements PDT {
 	@Override
 	public void removeMedianPoint() {
 		Point temp=maxHeap.ExtractMax();
+		tree.Remove(root);
+		
 		root=new Point(temp);
 		
 		saveStructureValidity();
-		
 	}
 
 	@Override
