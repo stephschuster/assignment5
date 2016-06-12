@@ -24,9 +24,8 @@ class UtilsClass {
 			return i/2;
 		}
 
-		public static void printarr(Point[] arr,int size){
-			System.out.println();
-			for (int i=0;i<size;i++){
+		public static void printarr(Point[] arr,int size,int start){
+			for (int i=start;i<size;i++){
 				System.out.print(" ("+arr[i].getX()+","+arr[i].getY()+") ");
 			}
 		}
@@ -36,10 +35,11 @@ class UtilsClass {
 				return x.getX() - y.getX();
 			return x.getY() - y.getY();
 		}
-		
-		private void sleep(){
+
+		public static void sleep(){
+			
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,3 +1,5 @@
+import org.jcp.xml.dsig.internal.dom.Utils;
+
 
 
 public class PointDataStructure implements PDT {
@@ -14,21 +16,32 @@ public class PointDataStructure implements PDT {
 	
 	public PointDataStructure(Point[] points, Point initialYMedianPoint)
 	{
+		
 		root= new Point(initialYMedianPoint);
 		
+		
+		System.out.println("array before part ");
+		UtilsClass.printarr(points, points.length,0);
+		System.out.println();
+		
 		int partRes=Partition(points, root);
+		
+		
+		System.out.println("array after part ");
+		UtilsClass.printarr(points, points.length,0);
+		System.out.println();
 		
 		//indexes of the two new heaps arrays
 		Point MaxIndex= new Point(0,partRes);
 		Point MinIndex= new Point(partRes+2,points.length-1);
 		
-		UtilsClass.printarr(points, points.length);
-		System.out.println("pertres"+partRes);
+		
+		
 		
 		
 		Point[] MaxHeapArray= new Point[(MaxIndex.getY()-MaxIndex.getX())+2];
 			
-		for(int i=MaxIndex.getX(),j=1;i<MaxIndex.getY()+1;i++,j++){
+		for(int i=MaxIndex.getX(),j=0;i<MaxIndex.getY()+1;i++,j++){
 			MaxHeapArray[j]=new Point(points[i]);
 		}
 
@@ -37,14 +50,19 @@ public class PointDataStructure implements PDT {
 		
 		Point[] MinHeapArray= new Point[MinIndex.getY()-MinIndex.getX()+2];
 		//System.out.println("minheaparray len "+MinHeapArray.length);
-		for(int i=MinIndex.getX(),j=1;i<MinIndex.getY()+1;i++,j++){
+		for(int i=MinIndex.getX(),j=0;i<MinIndex.getY()+1;i++,j++){
 			MinHeapArray[j]=new Point(points[i]);
 		}
 		minHeap=new MinHeapTree(MinHeapArray, MinHeapArray.length-1, MinIndex.getY()+1+UtilsClass.log(MinIndex.getY()+1, 2));
 		
+		
+		// sort by x
+		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
+
 		size = points.length;
 		tree = new AVLCountingTree();
 		tree.createTreeFromSortedArray(sortByXPoints(points));
+		
 	}
 
 	@Override
@@ -57,10 +75,8 @@ public class PointDataStructure implements PDT {
 		}
 		
 		saveStructureValidity();
-		
-		// also update the AVL tree
-		tree.Insert(point);
 	}
+	
 
 	public Point[] getPointsInRange(int XLeft, int XRight) {
 		int totalPoints = numOfPointsInRange(XLeft, XRight);
@@ -68,6 +84,7 @@ public class PointDataStructure implements PDT {
 		tree.fillArray(result, XLeft, XRight);
 		return result;
 	}
+
 	
 	public int numOfPointsInRange(int XLeft, int XRight) {
 		int leftIndex = tree.findSmallestPositionInRange(XLeft);
@@ -101,22 +118,32 @@ public class PointDataStructure implements PDT {
 		 numAllPoints=minSize+maxSize+1;
 		
 		Point[] ans=new Point[k];
-		int lowerLimit=(int) Math.floor(numAllPoints/2) - (int)Math.ceil((k+1)/2);
-		int higherLimit=(int) Math.floor(numAllPoints/2) - (int)Math.floor((k+1)/2);
+		int lowerLimit=(int) Math.floor(numAllPoints/2) - (int)Math.ceil((k-1)/2);
+		int higherLimit=(int) Math.floor(numAllPoints/2) - (int)Math.floor((k-1)/2);
 		int cnt=0;
 		
 		System.out.println("lowerLimit "+lowerLimit+"max size "+maxSize );
-		for(int i=lowerLimit,j=0;i<maxSize;i++,j++){
-			ans[j]=new Point(maxHeap.arr[i]);
-			cnt++;
+		
+		if(k==1){
+			ans[0]=root;
 		}
-		cnt++;
+		else{
+			
+		}
+		for(int i=lowerLimit,j=0;i<maxSize;i++,j++){
+			ans[j]=maxHeap.arr[i];
+			cnt++;
+			System.out.println("1counter "+cnt);
+		}
+		System.out.println("2counter "+cnt);
 		ans[cnt]=new Point(root);
 		cnt++;
-		for(int i=0,j=cnt;i<higherLimit;i++,j++){
-			ans[j]=new Point(minHeap.arr[i]);
+		for(int i=0,j=cnt;i<higherLimit&&j<ans.length;i++,j++){
+			ans[j]=minHeap.arr[i];
 		}
 		
+		System.out.println("prinat try");
+		UtilsClass.printarr(ans, ans.length, 0);
 		return ans;
 	}
 
@@ -127,44 +154,36 @@ public class PointDataStructure implements PDT {
 		return result;
 	}
 
-	private Point[] sortByXPoints(Point[] points) {
-		Point[] sortedByXPoints = new Point[points.length];
-		int lastIndex = points.length-1;
-		
-		if(lastIndex < points[lastIndex].getX()){
-			// we got an already sorted array
-			// nothing to do
-			sortedByXPoints = points;
-		}
-		else{ //maybe we got an unsorted array between 0 and length-1
-			for(int i = 0; i < points.length; i++){
-				sortedByXPoints[points[i].getX()] = points[i];
-			}
-		}
-		return sortedByXPoints;
-	}
-	
 	private int Partition(Point[] points, Point pivot){
 		
 		int left=0,right=points.length-1;
 		int pivot_index=IndexofPoint(points,pivot);
 	
+//		System.out.println("start part ");
+//		UtilsClass.printarr(points, numAllPoints);
+//		System.out.println("start1 part");
+//		
 		while(left<right){
 			while(left<points.length-1 && (points[left].getY()) <pivot.getY()){
+				UtilsClass.printarr(points, numAllPoints,0);
 				left++;
 			}
 			
 			while( (points[right].getY()) >= pivot.getY() ){
+				UtilsClass.printarr(points, numAllPoints,0);
 				right--;
 			}
 			
 			if(left<right){
+				UtilsClass.printarr(points, numAllPoints,0);
 				UtilsClass.swap(points,left,right);
 			}
 			
 		}
-		
+		UtilsClass.printarr(points, numAllPoints,0);
 		UtilsClass.swap(points,pivot_index,right);
+		UtilsClass.printarr(points, numAllPoints,0);
+		UtilsClass.sleep();
 		return right;
 		
 	}
@@ -180,6 +199,7 @@ public class PointDataStructure implements PDT {
 		return -1;
 	}
 	
+
 	private void saveStructureValidity(){
 		
 		 minSize=minHeap.returnSize();
@@ -214,6 +234,23 @@ public class PointDataStructure implements PDT {
 				
 			}
 		}
+	}
+	
+	private Point[] sortByXPoints(Point[] points) {
+		Point[] sortedByXPoints = new Point[points.length];
+		int lastIndex = points.length-1;
+		
+		if(lastIndex < points[lastIndex].getX()){
+			// we got an already sorted array
+			// nothing to do
+			sortedByXPoints = points;
+		}
+		else{ //maybe we got an unsorted array between 0 and length-1
+			for(int i = 0; i < points.length; i++){
+				sortedByXPoints[points[i].getX()] = points[i];
+			}
+		}
+		return sortedByXPoints;
 	}
 	
 }
