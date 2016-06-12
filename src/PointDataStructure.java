@@ -116,32 +116,25 @@ public class PointDataStructure implements PDT {
 		 numAllPoints=minSize+maxSize+1;
 		
 		Point[] ans=new Point[k];
-		int lowerLimit=(int) Math.floor(numAllPoints/2) - (int)Math.ceil((k-1)/2);
-		int higherLimit=(int) Math.floor(numAllPoints/2) - (int)Math.floor((k-1)/2);
-		int cnt=0;
+		int lowerLimit=(int)Math.ceil((k-1)/2.0);
+		int higherLimit=(int)Math.floor((k-1)/2.0);
 		
-		System.out.println("lowerLimit "+lowerLimit+"max size "+maxSize );
-		
-		if(k==1){
-			ans[0]=root;
-		}
-		else{
-			
-		}
-		for(int i=lowerLimit,j=0;i<maxSize;i++,j++){
-			ans[j]=maxHeap.arr[i];
-			cnt++;
-			System.out.println("1counter "+cnt);
-		}
-		System.out.println("2counter "+cnt);
-		ans[cnt]=new Point(root);
-		cnt++;
-		for(int i=0,j=cnt;i<higherLimit&&j<ans.length;i++,j++){
-			ans[j]=minHeap.arr[i];
+		ans[0]=root;
+		int index = 1;
+		minHeap.CleanAux();
+		minHeap.InitAux();
+		for(int i = 0; i < lowerLimit; i++){
+			ans[index] = minHeap.ExtractAux();
+			index++;
 		}
 		
-		System.out.println("prinat try");
-		UtilsClass.printarr(ans, ans.length, 0);
+		maxHeap.CleanAux();
+		maxHeap.InitAux();
+		for(int i = 0; i < higherLimit; i++){
+			ans[index] = maxHeap.ExtractAux();
+			index++;
+		}
+		
 		return ans;
 	}
 

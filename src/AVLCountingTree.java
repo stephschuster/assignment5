@@ -124,10 +124,16 @@ public class AVLCountingTree {
 	private AVLNode Insert(Point data, AVLNode current, int counter){
 		if(current == null){
 			current = new AVLNode(data);
-			current.counter = counter + 1;
+			current.counter = 1;
+			current.accumulateY = data.getY();
+			return current;
 		} else if(data.getX() > current.data.getX()){
 			current.right = Insert(data, current.right, current.counter+counter);
-			if(current.right.height - current.left.height == 2){
+			
+			int rightHeight = current.right == null ? 0 : current.right.height;
+			int leftHeight = current.left == null ? 0 : current.left.height;
+			
+			if(rightHeight - leftHeight == 2){
 				if(data.getX() > current.right.data.getX()){
 					current = rotateWithRightChild(current);
 				}
@@ -138,7 +144,11 @@ public class AVLCountingTree {
 		} else if(data.getX() < current.data.getX()){
 			current.left = Insert(data, current.left, counter);
 			current.counter++;
-			if(current.left.height - current.right.height == 2){
+			
+			int rightHeight = current.right == null ? 0 : current.right.height;
+			int leftHeight = current.left == null ? 0 : current.left.height;
+			
+			if(leftHeight - rightHeight == 2){
 				if(data.getX() < current.left.data.getX()){
 					current = rotateWithLeftChild(current);
 				}
@@ -148,7 +158,10 @@ public class AVLCountingTree {
 			}
 		}
 		
-		current.height = Math.max(current.left.height, current.right.height) + 1;
+		int rightHeight = current.right == null ? 0 : current.right.height;
+		int leftHeight = current.left == null ? 0 : current.left.height;
+		
+		current.height = Math.max(rightHeight, leftHeight) + 1;
 		current = setAccumulateY(current);
 		
 		return current;
