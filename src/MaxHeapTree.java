@@ -14,9 +14,13 @@ public class MaxHeapTree {
 		Size=numOfElements;
 		
 		
-		for(int i=0;i<numOfElements;i++){
+		for(int i=0;i<Size;i++){
 			arr[i+1]=newArr[i];
 		}
+		
+		//System.out.println("max array "+arr[1].getX());
+		UtilsClass.printarr(arr, Size, 1);
+		
 		
 		for (int i=(int) Math.ceil(Size/2);i>0;i--){
 			Heapify(i);
@@ -27,7 +31,7 @@ public class MaxHeapTree {
 		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int max=index;
 		
-		//System.out.println("max "+max+"left"+l+"size"+Size);
+		System.out.println("max "+max+"left"+l+"size"+Size+"right"+r);
 		
 		if (l<Size && (arr[l].getY() > arr[max].getY())){
 			max=l;
@@ -76,22 +80,5 @@ public class MaxHeapTree {
 	}
 	
 	
-	
-	public static void main(String args[]){
-		Point[] points = {
-				new Point(5, 100), 
-				new Point(3, 69),
-				new Point(2, 84),
-				new Point(1, 2),
-				new Point(4, 50),
-				};
-		MaxHeapTree myh=new MaxHeapTree(points, 5, 9);
-		UtilsClass.printarr(myh.arr, 6);
-		myh.HeapInsert(new Point(9,100));
-		UtilsClass.printarr(myh.arr, 7);
-		myh.HeapInsert(new Point(9,105));
-		UtilsClass.printarr(myh.arr, 8);
-		myh.ExtractMax();
-		UtilsClass.printarr(myh.arr, 7);
-	}
+
 }
