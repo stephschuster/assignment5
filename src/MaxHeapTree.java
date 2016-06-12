@@ -6,6 +6,9 @@ public class MaxHeapTree {
 	Point[] arr;
 	private int Size;
 	
+	int[] auxArr;
+	int sizeAux;
+	
 	public int returnSize(){
 		return Size;
 	}	
@@ -75,23 +78,71 @@ public class MaxHeapTree {
 		return arr[1]; 
 	}
 	
+	public void CleanAux(){
+		sizeAux = 0;
+	}
 	
+	public Point ExtractAux(){
+		if(sizeAux > 0){
+			Point point = arr[auxArr[0]];
+			int child1 = UtilsClass.Left(auxArr[0]);
+			int child2 = UtilsClass.Right(auxArr[0]);
+			// remove first element
+			auxArr[0] = auxArr[sizeAux-1];
+			sizeAux--;
+			HeapifyAux(0);
+			// Increase aux
+			auxArr[sizeAux] = -1;//child1;
+			IncreaseAuxKey(sizeAux, child1);
 	
-	public static void main(String args[]){
-		Point[] points = {
-				new Point(5, 100), 
-				new Point(3, 69),
-				new Point(2, 84),
-				new Point(1, 2),
-				new Point(4, 50),
-				};
-		MaxHeapTree myh=new MaxHeapTree(points, 5, 9);
-		UtilsClass.printarr(myh.arr, 6);
-		myh.HeapInsert(new Point(9,100));
-		UtilsClass.printarr(myh.arr, 7);
-		myh.HeapInsert(new Point(9,105));
-		UtilsClass.printarr(myh.arr, 8);
-		myh.ExtractMax();
-		UtilsClass.printarr(myh.arr, 7);
+			sizeAux++;
+			auxArr[sizeAux] = -1; //child2;
+			IncreaseAuxKey(sizeAux, child2);
+			sizeAux++;
+			
+			return point;
+		}
+		
+		return null;
+	}
+	
+	public void InitAux(){
+		auxArr[0] = 0;  
+		sizeAux = 1;
+	}
+	
+	private void HeapifyAux(int i){
+		int left = UtilsClass.Left(i);
+		int right = UtilsClass.Right(i);
+		int maximum = i;
+		if(left < sizeAux && UtilsClass.ComparePointsByY(arr[auxArr[left]], arr[auxArr[i]]) > 0){
+			maximum = left;
+		}
+		if(right < sizeAux && UtilsClass.ComparePointsByY(arr[auxArr[right]], arr[auxArr[maximum]]) > 0){
+			maximum = right;
+		}
+		
+		if(maximum != i){
+			int temp = auxArr[i];
+			auxArr[i] = auxArr[maximum];
+			auxArr[maximum] = temp;
+			HeapifyAux(maximum);
+		}
+	}
+
+	private void IncreaseAuxKey(int index, int key){
+		if(key < auxArr[index]){
+			// error
+		} else{
+			auxArr[index] = key;
+			int parent = UtilsClass.Parent(index);
+			while(index > 0 && UtilsClass.ComparePointsByY(arr[auxArr[parent]], arr[auxArr[index]]) < 0){
+				int temp = auxArr[parent];
+				auxArr[parent] = auxArr[index];
+				auxArr[index] = temp;
+				index = parent;
+				parent = UtilsClass.Parent(index);
+			}
+		}
 	}
 }

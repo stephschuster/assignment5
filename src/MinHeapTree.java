@@ -88,11 +88,12 @@ public class MinHeapTree {
 			sizeAux--;
 			HeapifyAux(0);
 			// Increase aux
-			auxArr[sizeAux] = child1;
-			HeapifyAux(0);
+			auxArr[sizeAux] = -1;//child1;
+			IncreaseAuxKey(sizeAux, child1);
+	
 			sizeAux++;
-			auxArr[sizeAux] = child2;
-			HeapifyAux(0);
+			auxArr[sizeAux] = -1; //child2;
+			IncreaseAuxKey(sizeAux, child2);
 			sizeAux++;
 			
 			return point;
@@ -124,24 +125,20 @@ public class MinHeapTree {
 			HeapifyAux(minimum);
 		}
 	}
-//
-//	public static void main(String args[]){
-//		Point[] points = {
-//				new Point(5, 100), 
-//				new Point(3, 69),
-//				new Point(2, 84),
-//				new Point(1, 2),
-//				new Point(4, 50),
-//				};
-//		MinHeapTree myh=new MinHeapTree(points, 5, 9);
-//		UtilsClass.printarr(myh.arr, 6);
-//		myh.HeapInsert(new Point(9,1));
-//		UtilsClass.printarr(myh.arr, 7);
-//		myh.HeapInsert(new Point(9,105));
-//		UtilsClass.printarr(myh.arr, 8);
-//		myh.ExtractMin();
-//		UtilsClass.printarr(myh.arr, 7);
-//	}
-//
-	
+
+	private void IncreaseAuxKey(int index, int key){
+		if(key < auxArr[index]){
+			// error
+		} else{
+			auxArr[index] = key;
+			int parent = UtilsClass.Parent(index);
+			while(index > 0 && UtilsClass.ComparePointsByY(arr[auxArr[parent]], arr[auxArr[index]]) > 0){
+				int temp = auxArr[parent];
+				auxArr[parent] = auxArr[index];
+				auxArr[index] = temp;
+				index = parent;
+				parent = UtilsClass.Parent(index);
+			}
+		}
+	}
 }
