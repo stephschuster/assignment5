@@ -4,7 +4,8 @@ public class AVLNode {
 	AVLNode right;
 	Point data;
 	int counter;
-	double accumulateHeight;
+	double accumulateY;
+	int height;
 	
 	public boolean isLeaf(){
 		return left == null && right == null;

@@ -22,15 +22,17 @@ public class AVLCountingTree {
 			return null;
 		}
 		
-		result.accumulateHeight = result.data.getY();
-		
+		result.accumulateY = result.data.getY();
+		int height = 0;
 		if(result.left != null){
-			result.accumulateHeight += result.left.accumulateHeight;
+			result.accumulateY += result.left.accumulateY;
+			height += result.left.height;
 		}
 		if(result.right != null){
-			result.accumulateHeight += result.right.accumulateHeight;
+			result.accumulateY += result.right.accumulateY;
+			height += result.right.height;
 		}
-		
+		result.height = height + 1;
 			
 		return result;
 	}
@@ -79,10 +81,9 @@ public class AVLCountingTree {
 		return -1;
 	}
 	
-	
 	public double findHeightBefore(int x, boolean includeRange){
 		
-		return findHeightBefore(x, root, root.accumulateHeight, includeRange);
+		return findHeightBefore(x, root, root.accumulateY, includeRange);
 	}
 	
 	private double findHeightBefore(int x, AVLNode current, double accumulateHeight, boolean includeRange){
@@ -98,7 +99,7 @@ public class AVLCountingTree {
 				return result;
 			} else{
 				if(current.right != null){
-					accumulateHeight -= current.right.accumulateHeight;
+					accumulateHeight -= current.right.accumulateY;
 				}
 				
 				double result = findHeightBefore(x, current.left, accumulateHeight-current.data.getY(), includeRange);
@@ -128,10 +129,10 @@ public class AVLCountingTree {
 			} else if(current.data.getX() <= x){
 				double result = findHeightAfter(x, current.left);
 				if(result > -1)
-					return current.accumulateHeight - result;
+					return current.accumulateY - result;
 				else{
 					if(current.right!= null)
-						return current.right.accumulateHeight;
+						return current.right.accumulateY;
 					else
 						return 0;
 				}
@@ -160,7 +161,38 @@ public class AVLCountingTree {
 	}
 
 	public void Insert(Point data){
+		root = Insert(data, root, root.counter);
+	}
+	
+	private AVLNode Insert(Point data, AVLNode current, int counter){
+		if(current == null){
+			current = new AVLNode();
+			current.data = data;
+			current.counter = counter + 1;
+		} else if(data.getX() > current.data.getX()){
+			current.right = Insert(data, current.right, current.counter);
+			if(current.right.height - current.left.height == 2){
+				if(data.getX() > current.right.data.getX()){
+					current = rotateWithRightChild(current);
+				}
+				else{
+					current = doubleWithRightChild(current);
+				}
+			}
+		} else if(data.getX() < current.data.getX()){
+			current.left = Insert(data, current.left, current.counter);
+			if(current.left.height - current.right.height == 2){
+				if(data.getX() < current.left.data.getX()){
+					current = rotateWithLeftChild(current);
+				}
+	            else{
+	            	current = doubleWithLeftChild(current);
+	            }
+			}
+		}
 		
+		current.height = Math.max(current.left.height, current.right.height) + 1;
+		return current;
 	}
 	
 	public void Remove(Point data){
@@ -186,4 +218,36 @@ public class AVLCountingTree {
 		}
 		return index;
 	}
+
+	private AVLNode rotateWithLeftChild(AVLNode node)
+    {
+    	AVLNode left = node.left;
+        node.left = left.right;
+        left.right = node;
+        node.height = Math.max(node.right.height, node.left.height) + 1;
+        left.height = Math.max(left.left.height, node.height) + 1;
+        return left;
+    }
+   
+    private AVLNode rotateWithRightChild(AVLNode node)
+    {
+    	AVLNode right = node.right;
+        node.right = right.left;
+        right.left = node;
+        node.height = Math.max(node.right.height,node.left.height) + 1;
+        right.height = Math.max(right.right.height, node.height) + 1;
+        return right;
+    }
+    
+    private AVLNode doubleWithLeftChild(AVLNode node)
+    {
+    	node.left = rotateWithRightChild(node.left);
+        return rotateWithLeftChild(node);
+    }
+   
+    private AVLNode doubleWithRightChild(AVLNode node)
+    {
+    	node.right = rotateWithLeftChild(node.right);
+        return rotateWithRightChild(node);
+    }
 }
