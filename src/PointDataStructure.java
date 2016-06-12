@@ -54,35 +54,12 @@ public class PointDataStructure implements PDT {
 			MinHeapArray[j]=new Point(points[i]);
 		}
 		minHeap=new MinHeapTree(MinHeapArray, MinHeapArray.length-1, MinIndex.getY()+1+UtilsClass.log(MinIndex.getY()+1, 2));
-		
-		
-		// sort by x
-		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
 
 		size = points.length;
 		tree = new AVLCountingTree();
-		tree.createTreeFromSortedArray(sortByXPoints(points), size);
+		tree.createTreeFromSortedArray(sortByXPoints(points));
 		
 	}
-	
-
-	private Point[] sortByXPoints(Point[] points) {
-		Point[] sortedByXPoints = new Point[points.length];
-		int lastIndex = points.length-1;
-		
-		if(lastIndex < points[lastIndex].getX()){
-			// we got an already sorted array
-			// nothing to do
-			sortedByXPoints = points;
-		}
-		else{ //maybe we got an unsorted array between 0 and length-1
-			for(int i = 0; i < points.length; i++){
-				sortedByXPoints[points[i].getX()] = points[i];
-			}
-		}
-		return sortedByXPoints;
-	}
-
 
 	@Override
 	public void addPoint(Point point) {
@@ -94,6 +71,7 @@ public class PointDataStructure implements PDT {
 		}
 		
 		saveStructureValidity();
+		tree.Insert(point);
 	}
 	
 
@@ -123,10 +101,11 @@ public class PointDataStructure implements PDT {
 	@Override
 	public void removeMedianPoint() {
 		Point temp=maxHeap.ExtractMax();
+		tree.Remove(root);
+		
 		root=new Point(temp);
 		
 		saveStructureValidity();
-		
 	}
 
 	@Override
@@ -253,6 +232,23 @@ public class PointDataStructure implements PDT {
 				
 			}
 		}
+	}
+	
+	private Point[] sortByXPoints(Point[] points) {
+		Point[] sortedByXPoints = new Point[points.length];
+		int lastIndex = points.length-1;
+		
+		if(lastIndex < points[lastIndex].getX()){
+			// we got an already sorted array
+			// nothing to do
+			sortedByXPoints = points;
+		}
+		else{ //maybe we got an unsorted array between 0 and length-1
+			for(int i = 0; i < points.length; i++){
+				sortedByXPoints[points[i].getX()] = points[i];
+			}
+		}
+		return sortedByXPoints;
 	}
 	
 }

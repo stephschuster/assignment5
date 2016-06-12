@@ -30,6 +30,12 @@ class UtilsClass {
 			}
 		}
 		
+		public static int ComparePointsByY(Point x, Point y){
+			if(x.getY() == y.getY())
+				return x.getX() - y.getX();
+			return x.getY() - y.getY();
+		}
+
 		public static void sleep(){
 			
 			try {
