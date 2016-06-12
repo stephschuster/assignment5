@@ -1,6 +1,9 @@
 
 public class MinHeapTree {
 	 Point[] arr;
+	 int[] auxArr;
+	 int sizeAux;
+	 
 	//number of elements in the heap
 	private int Size;
 	
@@ -9,6 +12,8 @@ public class MinHeapTree {
 	}
 	public MinHeapTree(Point[] newArr,int numOfElements,int arrayLength){
 		arr= new Point[arrayLength+1];
+		auxArr= new int[arrayLength+1];
+		
 		Size=numOfElements;
 		
 		for(int i=0;i<numOfElements;i++){
@@ -67,6 +72,57 @@ public class MinHeapTree {
 	
 	public Point HeapMin(){
 		return arr[1]; 
+	}
+	
+	public void CleanAux(){
+		sizeAux = 0;
+	}
+	
+	public Point ExtractAux(){
+		if(sizeAux > 0){
+			Point point = arr[auxArr[0]];
+			int child1 = UtilsClass.Left(auxArr[0]);
+			int child2 = UtilsClass.Right(auxArr[0]);
+			// remove first element
+			auxArr[0] = auxArr[sizeAux-1];
+			sizeAux--;
+			HeapifyAux(0);
+			// Increase aux
+			auxArr[sizeAux] = child1;
+			HeapifyAux(0);
+			sizeAux++;
+			auxArr[sizeAux] = child2;
+			HeapifyAux(0);
+			sizeAux++;
+			
+			return point;
+		}
+		
+		return null;
+	}
+	
+	public void InitAux(){
+		auxArr[0] = 0;  
+		sizeAux = 1;
+	}
+	
+	private void HeapifyAux(int i){
+		int left = UtilsClass.Left(i);
+		int right = UtilsClass.Right(i);
+		int minimum = i;
+		if(left < sizeAux && UtilsClass.ComparePointsByY(arr[auxArr[left]], arr[auxArr[i]]) < 0){
+			minimum = left;
+		}
+		if(right < sizeAux && UtilsClass.ComparePointsByY(arr[auxArr[right]], arr[auxArr[minimum]]) < 0){
+			minimum = right;
+		}
+		
+		if(minimum != i){
+			int temp = auxArr[i];
+			auxArr[i] = auxArr[minimum];
+			auxArr[minimum] = temp;
+			HeapifyAux(minimum);
+		}
 	}
 //
 //	public static void main(String args[]){

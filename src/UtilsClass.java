@@ -31,6 +31,12 @@ class UtilsClass {
 			}
 		}
 		
+		public static int ComparePointsByY(Point x, Point y){
+			if(x.getY() == y.getY())
+				return x.getX() - y.getX();
+			return x.getY() - y.getY();
+		}
+		
 		private void sleep(){
 			try {
 				Thread.sleep(10000);
