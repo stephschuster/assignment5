@@ -12,8 +12,8 @@ public class Main {
 	public static void main(String[] args) 
 	{
 		testA();
-		testB();
-		testC();
+		//testB();
+		//testC();
 	}
 
 	
@@ -28,6 +28,7 @@ public class Main {
 				};
 		
 		PDT pdt=new PointDataStructure(points,points[3]);
+		//System.out.println("here");
 		String testName;
 		int expected;
 		int result;
@@ -35,6 +36,7 @@ public class Main {
 		testName = "A0";
 		testExpectedPoints(testName, points, pdt.getAllPoints());
 
+		
 		int XLeft=3;
 		int XRight=7;
 		testName = "A1";
@@ -53,7 +55,7 @@ public class Main {
 		Point[] expectedPoints1 = {
 				new Point(1, 2),
 				};
-		//testExpectedPoints(testName, expectedPoints1, pdt.getMedianPoints(1));
+		testExpectedPoints(testName, expectedPoints1, pdt.getMedianPoints(1));
 		testName = "A3.2";
 		Point[] expectedPoints2 = { 
 				new Point(3, 1),
@@ -93,21 +95,21 @@ public class Main {
 				new Point(15, 15),
 				new Point(35, 12),
 				};
-		testExpectedPoints(testName, expectedLargePoints, pdt.getPointsInRange(XLeft, XRight));
+		//testExpectedPoints(testName, expectedLargePoints, pdt.getPointsInRange(XLeft, XRight));
 
 		XLeft=3;
 		XRight=7;
 		testName = "A5";
 		expected = 2;
 		result = pdt.numOfPointsInRange(XLeft, XRight);
-		testExpected(testName, expected, result);
+		//testExpected(testName, expected, result);
 		
 		XLeft=7;
 		XRight=9;
 		testName = "A6";
 		expectedD = 6.0;
 		resultD = pdt.averageHeightInRange(XLeft, XRight);
-		testExpected(testName, expectedD, resultD);
+		//testExpected(testName, expectedD, resultD);
 		
 		testName = "A7.1";
 		Point[] expectedPoints4 = {

@@ -5,25 +5,44 @@ public class PointDataStructure implements PDT {
 	private AVLCountingTree tree;
 	private int size;
 
-	MedianNode root;
+	Point root;
 	MaxHeapTree maxHeap;
 	MinHeapTree minHeap;
 	
+	int minSize,maxSize,numAllPoints;
+	
+	
 	public PointDataStructure(Point[] points, Point initialYMedianPoint)
 	{
-//		root= new MedianNode(initialYMedianPoint);
-//		
-//		int partRes=Partition(points, initialYMedianPoint);
-//		//indexes of the two new heaps arrays
-//		Point MaxArrayIndex= new Point(0,partRes);
-//		Point MinArrayIndex= new Point(partRes+2,points.length-1);
-//		
-//		Point[] MaxHeapArray= new Point[partRes+1];
-//		for(int i=MaxArrayIndex.getX();i<MaxArrayIndex.getY()+1;i++)
-//			MaxHeapArray[i+1]=new Point(points[i]);
-//		MaxHeapTree MaxHeap= new MaxHeapTree(MaxHeapArray,partRes+1,partRes+1+UtilsClass.log(partRes+1,2));
-//		
-//		root.setLeft(MaxHeap);
+		
+		root= new Point(initialYMedianPoint);
+		
+		int partRes=Partition(points, root);
+		
+		//indexes of the two new heaps arrays
+		Point MaxIndex= new Point(0,partRes);
+		Point MinIndex= new Point(partRes+2,points.length-1);
+		
+		UtilsClass.printarr(points, points.length);
+		System.out.println("pertres"+partRes);
+		
+		
+		Point[] MaxHeapArray= new Point[(MaxIndex.getY()-MaxIndex.getX())+2];
+			
+		for(int i=MaxIndex.getX(),j=1;i<MaxIndex.getY()+1;i++,j++){
+			MaxHeapArray[j]=new Point(points[i]);
+		}
+
+		maxHeap= new MaxHeapTree(MaxHeapArray,MaxHeapArray.length-1,MaxIndex.getY()+1+UtilsClass.log(MaxIndex.getY()+1,2));		
+		
+		
+		Point[] MinHeapArray= new Point[MinIndex.getY()-MinIndex.getX()+2];
+		//System.out.println("minheaparray len "+MinHeapArray.length);
+		for(int i=MinIndex.getX(),j=1;i<MinIndex.getY()+1;i++,j++){
+			MinHeapArray[j]=new Point(points[i]);
+		}
+		minHeap=new MinHeapTree(MinHeapArray, MinHeapArray.length-1, MinIndex.getY()+1+UtilsClass.log(MinIndex.getY()+1, 2));
+		
 		
 		// sort by x
 		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
@@ -55,11 +74,17 @@ public class PointDataStructure implements PDT {
 
 	@Override
 	public void addPoint(Point point) {
-		// TODO Auto-generated method stub
+		if(point.getY()>root.getY()){
+			minHeap.HeapInsert(point);
+		}
+		else {
+			maxHeap.HeapInsert(point);
+		}
 		
+		saveStructureValidity();
 	}
-
 	
+
 	public Point[] getPointsInRange(int XLeft, int XRight) {
 		int totalPoints = numOfPointsInRange(XLeft, XRight);
 		Point[] result = new Point[totalPoints];
@@ -85,14 +110,38 @@ public class PointDataStructure implements PDT {
 
 	@Override
 	public void removeMedianPoint() {
-		// TODO Auto-generated method stub
+		Point temp=maxHeap.ExtractMax();
+		root=new Point(temp);
+		
+		saveStructureValidity();
 		
 	}
 
 	@Override
 	public Point[] getMedianPoints(int k) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		 minSize=minHeap.returnSize();
+		 maxSize=maxHeap.returnSize();
+		 numAllPoints=minSize+maxSize+1;
+		
+		Point[] ans=new Point[k];
+		int lowerLimit=(int) Math.floor(numAllPoints/2) - (int)Math.ceil((k+1)/2);
+		int higherLimit=(int) Math.floor(numAllPoints/2) - (int)Math.floor((k+1)/2);
+		int cnt=0;
+		
+		System.out.println("lowerLimit "+lowerLimit+"max size "+maxSize );
+		for(int i=lowerLimit,j=0;i<maxSize;i++,j++){
+			ans[j]=new Point(maxHeap.arr[i]);
+			cnt++;
+		}
+		cnt++;
+		ans[cnt]=new Point(root);
+		cnt++;
+		for(int i=0,j=cnt;i<higherLimit;i++,j++){
+			ans[j]=new Point(minHeap.arr[i]);
+		}
+		
+		return ans;
 	}
 
 	@Override
@@ -102,27 +151,26 @@ public class PointDataStructure implements PDT {
 		return result;
 	}
 
-	/**
-	 * Execute partition with a given pivot
-	 * 
-	 * @param points
-	 * @param pivot
-	 * 
-	 * return index of the end of the first array
-	 */
 	private int Partition(Point[] points, Point pivot){
 		
 		int left=0,right=points.length-1;
 		int pivot_index=IndexofPoint(points,pivot);
-		
+	
 		while(left<right){
-			while(left<points.length-1 && (points[left].getY()) <=pivot.getY())
+			while(left<points.length-1 && (points[left].getY()) <pivot.getY()){
 				left++;
-			while( (points[right].getY()) <= pivot.getY() )
+			}
+			
+			while( (points[right].getY()) >= pivot.getY() ){
 				right--;
-			if(left<right)
+			}
+			
+			if(left<right){
 				UtilsClass.swap(points,left,right);
+			}
+			
 		}
+		
 		UtilsClass.swap(points,pivot_index,right);
 		return right;
 		
@@ -137,6 +185,43 @@ public class PointDataStructure implements PDT {
 		
 		}
 		return -1;
+	}
+	
+
+	private void saveStructureValidity(){
+		
+		 minSize=minHeap.returnSize();
+		 maxSize=maxHeap.returnSize();
+		 numAllPoints=minSize+maxSize+1;
+		
+		if (numAllPoints%2!=0 && (minSize!=maxSize)){
+			while(minSize>maxSize){
+				Point temp=minHeap.ExtractMin();
+				maxHeap.HeapInsert(root);
+				root=new Point(temp);
+				
+			}
+			while(maxSize>minSize){
+				Point temp=maxHeap.ExtractMax();
+				minHeap.HeapInsert(root);
+				root=new Point(temp);
+				
+			}
+		}
+		else if (numAllPoints%2==0 && (minSize+1 !=maxSize)){
+			while(minSize+1>maxSize){
+				Point temp=minHeap.ExtractMin();
+				maxHeap.HeapInsert(root);
+				root=new Point(temp);
+				
+			}
+			while(maxSize>minSize+1){
+				Point temp=maxHeap.ExtractMax();
+				minHeap.HeapInsert(root);
+				root=new Point(temp);
+				
+			}
+		}
 	}
 	
 }

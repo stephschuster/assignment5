@@ -2,10 +2,13 @@ import javax.management.RuntimeErrorException;
 
 
 public class MaxHeapTree {
-	//TODO :private
+	
 	Point[] arr;
-	//number of elements in the heap
-	int Size;
+	private int Size;
+	
+	public int returnSize(){
+		return Size;
+	}	
 	public MaxHeapTree(Point[] newArr,int numOfElements,int arrayLength){
 		arr= new Point[arrayLength+1];
 		Size=numOfElements;
@@ -24,6 +27,7 @@ public class MaxHeapTree {
 		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int max=index;
 		
+		//System.out.println("max "+max+"left"+l+"size"+Size);
 		
 		if (l<Size && (arr[l].getY() > arr[max].getY())){
 			max=l;
@@ -72,22 +76,22 @@ public class MaxHeapTree {
 	}
 	
 	
-//	
-//	public static void main(String args[]){
-//		Point[] points = {
-//				new Point(5, 100), 
-//				new Point(3, 69),
-//				new Point(2, 84),
-//				new Point(1, 2),
-//				new Point(4, 50),
-//				};
-//		MaxHeapTree myh=new MaxHeapTree(points, 5, 9);
-//		UtilsClass.printarr(myh.arr, 6);
-//		myh.HeapInsert(new Point(9,70));
-//		UtilsClass.printarr(myh.arr, 7);
-//		myh.HeapInsert(new Point(9,105));
-//		UtilsClass.printarr(myh.arr, 8);
-//		myh.ExtractMax();
-//		UtilsClass.printarr(myh.arr, 7);
-//	}
+	
+	public static void main(String args[]){
+		Point[] points = {
+				new Point(5, 100), 
+				new Point(3, 69),
+				new Point(2, 84),
+				new Point(1, 2),
+				new Point(4, 50),
+				};
+		MaxHeapTree myh=new MaxHeapTree(points, 5, 9);
+		UtilsClass.printarr(myh.arr, 6);
+		myh.HeapInsert(new Point(9,100));
+		UtilsClass.printarr(myh.arr, 7);
+		myh.HeapInsert(new Point(9,105));
+		UtilsClass.printarr(myh.arr, 8);
+		myh.ExtractMax();
+		UtilsClass.printarr(myh.arr, 7);
+	}
 }

@@ -1,9 +1,12 @@
 
 public class MinHeapTree {
-	Point[] arr;
+	 Point[] arr;
 	//number of elements in the heap
-	int Size;
+	private int Size;
 	
+	public int returnSize(){
+		return Size;
+	}
 	public MinHeapTree(Point[] newArr,int numOfElements,int arrayLength){
 		arr= new Point[arrayLength+1];
 		Size=numOfElements;
@@ -20,6 +23,8 @@ public class MinHeapTree {
 	private void Heapify(int index){
 		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int min=index;
+		
+		
 		
 		if (l<Size && (arr[l].getY() < arr[min].getY())){
 			min=l;
