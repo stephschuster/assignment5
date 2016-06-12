@@ -54,10 +54,6 @@ public class PointDataStructure implements PDT {
 			MinHeapArray[j]=new Point(points[i]);
 		}
 		minHeap=new MinHeapTree(MinHeapArray, MinHeapArray.length-1, MinIndex.getY()+1+UtilsClass.log(MinIndex.getY()+1, 2));
-		
-		
-		// sort by x
-		int maxSize = points.length + (int) Math.ceil(10*Math.log(points.length)/Math.log(2));
 
 		size = points.length;
 		tree = new AVLCountingTree();
