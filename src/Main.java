@@ -13,7 +13,7 @@ public class Main {
 	{
 		testA();
 		testB();
-		//testC();
+		testC();
 	}
 
 	
@@ -35,7 +35,6 @@ public class Main {
 		testName = "A0";
 		testExpectedPoints(testName, points, pdt.getAllPoints());
 
-		
 		int XLeft=3;
 		int XRight=7;
 		testName = "A1";
@@ -220,7 +219,7 @@ public class Main {
 			new Point(NUM-(mid+2)-1,mid+2),
 			new Point(NUM-(mid-3)-1,mid-3),
 		};
-		//testExpectedPoints(testName, expectedPoints2, pdt.getMedianPoints(k));
+		testExpectedPoints(testName, expectedPoints2, pdt.getMedianPoints(k));
 		
 		testName = "B5";
 		Point[] expectedPoints3=
@@ -233,7 +232,7 @@ public class Main {
 			new Point(NUM-(mid-3)-1,mid-3),
 			new Point(NUM-(mid+3)-1,mid+3),
 		};
-		//testExpectedPoints(testName, expectedPoints3, pdt.getMedianPoints(k+1));
+		testExpectedPoints(testName, expectedPoints3, pdt.getMedianPoints(k+1));
 		
 		pdt.addPoint(new Point(NUM,NUM));
 		
@@ -248,7 +247,7 @@ public class Main {
 				new Point(NUM-(mid+2)-1,mid+2),
 				new Point(NUM-(mid-3)-1,mid-3),
 		};
-		//testExpectedPoints(testName, expectedPoints4, pdt.getMedianPoints(k));
+		testExpectedPoints(testName, expectedPoints4, pdt.getMedianPoints(k));
 		
 		testName = "B6.2";
 		Point[] expectedPoints5=
@@ -261,7 +260,7 @@ public class Main {
 				new Point(NUM-(mid-3)-1,mid-3),
 				new Point(NUM-(mid+3)-1,mid+3),
 		};
-		//testExpectedPoints(testName, expectedPoints5, pdt.getMedianPoints(k+1));
+		testExpectedPoints(testName, expectedPoints5, pdt.getMedianPoints(k+1));
 		
 		XLeft=1;
 		XRight=3;
@@ -289,7 +288,7 @@ public class Main {
 				new Point(NUM-(mid-3)-1,mid-3),
 				new Point(NUM-(mid+3)-1,mid+3),
 		};
-		//testExpectedPoints(testName, expectedPoints6, pdt.getMedianPoints(k));
+		testExpectedPoints(testName, expectedPoints6, pdt.getMedianPoints(k));
 		
 		testName = "B7.2";
 		Point[] expectedPoints7=
@@ -304,7 +303,7 @@ public class Main {
 				//
 				new Point(NUM-(mid+4)-1,mid+4),
 		};
-		//testExpectedPoints(testName, expectedPoints7, pdt.getMedianPoints(k+1));
+		testExpectedPoints(testName, expectedPoints7, pdt.getMedianPoints(k+1));
 	}
 
 	

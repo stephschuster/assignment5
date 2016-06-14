@@ -20,7 +20,7 @@ public class MinHeapTree {
 			arr[i+1]=newArr[i];
 		}
 		//System.out.println("here");
-		for (int i=Size/2;i>0;i--)
+		for (int i=(int)Math.floor(Size/2.0);i>0;i--)
 			Heapify(i);
 		
 	}
@@ -29,12 +29,10 @@ public class MinHeapTree {
 		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int min=index;
 		
-		
-		
-		if (l<Size && (arr[l].getY() < arr[min].getY())){
+		if (l<=Size && UtilsClass.ComparePointsByY(arr[l],arr[min]) < 0){
 			min=l;
 		}
-		if( r<=Size && (arr[r].getY() < arr[min].getY())){
+		if( r<=Size && UtilsClass.ComparePointsByY(arr[r], arr[min]) < 0){
 			min=r;
 		}
 		if (min!= index){
@@ -63,7 +61,7 @@ public class MinHeapTree {
 		if (key.getY()<arr[i].getY())
 			throw new RuntimeException("New key is bigger than current key");
 		arr[i]= new Point(key);
-		while (i>1 && arr[UtilsClass.Parent(i)].getY()> arr[i].getY()){
+		while (i>1 && UtilsClass.ComparePointsByY(arr[UtilsClass.Parent(i)], arr[i]) > 0){
 			UtilsClass.swap(arr, i, UtilsClass.Parent(i));
 			i=UtilsClass.Parent(i);
 		}

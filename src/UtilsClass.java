@@ -9,9 +9,9 @@ class UtilsClass {
 			Arr[a]=new Point(temp);
 		}
 		
-		public static int log(int x, int base)
+		public static int log(double x, double base)
 		{
-		    return (int) (Math.log(x) / Math.log(base));
+		    return (int) Math.ceil((Math.log(x) / Math.log(base)));
 		}
 		
 		public static int Left(int i){

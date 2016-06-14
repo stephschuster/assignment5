@@ -22,11 +22,7 @@ public class MaxHeapTree {
 			arr[i+1]=newArr[i];
 		}
 		
-		//System.out.println("max array "+arr[1].getX());
-		UtilsClass.printarr(arr, Size, 1);
-		
-		
-		for (int i=(int) Math.ceil(Size/2);i>0;i--){
+		for (int i=(int) Math.floor(Size/2.0);i>0;i--){
 			Heapify(i);
 		}
 	}
@@ -35,13 +31,11 @@ public class MaxHeapTree {
 		int l=UtilsClass.Left(index),r=UtilsClass.Right(index);
 		int max=index;
 		
-		System.out.println("max "+max+"left"+l+"size"+Size+"right"+r);
-		
-		if (l<Size && (arr[l].getY() > arr[max].getY())){
+		if (l<=Size && UtilsClass.ComparePointsByY(arr[l], arr[max]) > 0){
 			max=l;
 		
 		}
-		if( r<=Size && (arr[r].getY() > arr[max].getY())){
+		if( r<=Size && UtilsClass.ComparePointsByY(arr[r], arr[max]) > 0){
 			max=r;
 
 		}
@@ -66,7 +60,7 @@ public class MaxHeapTree {
 		if (key.getY()<arr[i].getY())
 			throw new RuntimeException("New key is smaller than current key");
 		arr[i]= new Point(key);
-		while (i>1 && arr[UtilsClass.Parent(i)].getY()< arr[i].getY()){
+		while (i>1 && UtilsClass.ComparePointsByY(arr[UtilsClass.Parent(i)], arr[i]) < 0){
 			UtilsClass.swap(arr, i, UtilsClass.Parent(i));
 			i=UtilsClass.Parent(i);
 		}
