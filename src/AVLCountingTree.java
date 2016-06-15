@@ -262,8 +262,14 @@ public class AVLCountingTree {
     	AVLNode left = node.left;
         node.left = left.right;
         left.right = node;
-        node.height = Math.max(node.right.height, node.left.height) + 1;
-        left.height = Math.max(left.left.height, node.height) + 1;
+        
+        int rightHeight = node.right == null ? 0 : node.right.height;
+		int leftHeight = node.left == null ? 0 : node.left.height;
+		
+        node.height = Math.max(rightHeight, leftHeight) + 1;
+        
+        int leftLeftHeight = left.left == null ? 0 : left.left.height;
+        left.height = Math.max(leftLeftHeight, node.height) + 1;
         
         node.counter = node.counter - left.counter;
         node = setAccumulateY(node);
@@ -277,8 +283,13 @@ public class AVLCountingTree {
     	AVLNode right = node.right;
         node.right = right.left;
         right.left = node;
-        node.height = Math.max(node.right.height,node.left.height) + 1;
-        right.height = Math.max(right.right.height, node.height) + 1;
+        
+        int rightHeight = node.right == null ? 0 : node.right.height;
+		int leftHeight = node.left == null ? 0 : node.left.height;
+		
+        node.height = Math.max(rightHeight, leftHeight) + 1;
+        int rightRightHeight = right.right == null ? 0 : right.right.height;
+        right.height = Math.max(rightRightHeight, node.height) + 1;
         
         right.counter = right.counter + node.counter;
         node = setAccumulateY(node);

@@ -22,7 +22,7 @@ public class MaxHeapTree {
 			arr[i+1]=newArr[i];
 		}
 		
-		for (int i=(int) Math.floor(Size/2.0);i>0;i--){
+		for (int i=(int) Math.ceil(Size/2.0);i>0;i--){
 			Heapify(i);
 		}
 	}
@@ -93,11 +93,15 @@ public class MaxHeapTree {
 			// Increase aux
 			sizeAux++;
 			auxArr[sizeAux] = -1;//child1;
-			IncreaseAuxKey(sizeAux, child1);
+			if(!IncreaseAuxKey(sizeAux, child1)){
+				sizeAux--;
+			}
 	
 			sizeAux++;
 			auxArr[sizeAux] = -1; //child2;
-			IncreaseAuxKey(sizeAux, child2);
+			if(!IncreaseAuxKey(sizeAux, child2)){
+				sizeAux--;
+			}
 			
 			return point;
 		}
@@ -129,9 +133,9 @@ public class MaxHeapTree {
 		}
 	}
 
-	private void IncreaseAuxKey(int index, int key){
+	private boolean IncreaseAuxKey(int index, int key){
 		if(key < auxArr[index] || key > Size){
-			// error
+			return false;
 		} else{
 			auxArr[index] = key;
 			int parent = UtilsClass.Parent(index);
@@ -143,5 +147,6 @@ public class MaxHeapTree {
 				parent = UtilsClass.Parent(index);
 			}
 		}
+		return true;
 	}
 }

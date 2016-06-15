@@ -20,7 +20,7 @@ public class MinHeapTree {
 			arr[i+1]=newArr[i];
 		}
 		//System.out.println("here");
-		for (int i=(int)Math.floor(Size/2.0);i>0;i--)
+		for (int i=(int)Math.ceil(Size/2.0);i>0;i--)
 			Heapify(i);
 		
 	}
@@ -88,11 +88,15 @@ public class MinHeapTree {
 			// Increase aux
 			sizeAux++;
 			auxArr[sizeAux] = -1;//child1;
-			IncreaseAuxKey(sizeAux, child1);
+			if(!IncreaseAuxKey(sizeAux, child1)){
+				sizeAux--;
+			}
 	
 			sizeAux++;
 			auxArr[sizeAux] = -1; //child2;
-			IncreaseAuxKey(sizeAux, child2);
+			if(!IncreaseAuxKey(sizeAux, child2)){
+				sizeAux--;
+			}
 			
 			return point;
 		}
@@ -124,9 +128,9 @@ public class MinHeapTree {
 		}
 	}
 
-	private void IncreaseAuxKey(int index, int key){
+	private boolean IncreaseAuxKey(int index, int key){
 		if(key < auxArr[index] || key > Size){
-			// error
+			return false;
 		} else{
 			auxArr[index] = key;
 			int parent = UtilsClass.Parent(index);
@@ -138,5 +142,7 @@ public class MinHeapTree {
 				parent = UtilsClass.Parent(index);
 			}
 		}
+		
+		return true;
 	}
 }
