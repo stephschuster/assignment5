@@ -70,16 +70,24 @@ public class PointDataStructure implements PDT {
 
 	
 	public int numOfPointsInRange(int XLeft, int XRight) {
+		if(XRight < XLeft)
+			return 0;
 		int leftIndex = tree.findSmallestPositionInRange(XLeft);
 		int rightIndex = tree.findBiggerPositionInRange(XRight);
+		if(leftIndex == -1 || rightIndex == -1)
+			return 0;
 		return rightIndex - leftIndex + 1;
 	}
 	
 	@Override
 	public double averageHeightInRange(int XLeft, int XRight) {
+		double totalPoints = numOfPointsInRange(XLeft, XRight);
+		if(totalPoints == 0)
+			return 0;
+		
 		double beforeLeft = tree.findHeightBefore(XLeft, false);
 		double beforeRight = tree.findHeightBefore(XRight, true);
-		double totalPoints = numOfPointsInRange(XLeft, XRight);
+
 		
 		return (beforeRight - beforeLeft)/totalPoints;
 	}
