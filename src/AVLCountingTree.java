@@ -92,8 +92,6 @@ public class AVLCountingTree {
 				double result = findHeightBefore(x, current.right, accumulateHeight, includeRange);
 				if(result ==-1){
 					result = accumulateHeight;
-					if(!includeRange)
-						result = result- current.data.getY();
 				}
 				
 				return result;
